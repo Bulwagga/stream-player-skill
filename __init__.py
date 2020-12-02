@@ -16,18 +16,30 @@ class StreamPlayer(MycroftSkill):
         #self.speak_dialog("find a station")
         #print('Message: "{}"'.format(message.data.get('utterance')))
         utterance = message.data.get('utterance')
-        self.speak_dialog(utterance)
+        #self.speak_dialog(utterance)
         LOG.info(utterance)
-        words = utterance.split(" ")
 
-        stations = [ 'wamc', 'weqx' ]
         instance = None
+        url_record = 'junk'
+        count = 0
         
-        for station in stations:
-                if re.search(station, words[1]):
+        while url_record != '':
                 
-                        self.url = 'http://playerservices.streamtheworld.com/api/livestream-redirect/WAMCHD2.mp3'
+                count = count + 1
+                stream_name = 'stream' + str(count)
+                url_record = self.settings.get(stream_name)
+                
+                if url_record == '':
+                        continue
                         
+                strings = url_record.split(" ")
+                self.url = strings[1]
+                print(self.url)
+                print(strings[0])
+                print(utterance)
+        
+                if re.search(strings[0].lower(), utterance):
+
                         if instance == None:
                                 #define VLC instance
                                 instance = vlc.Instance('--input-repeat=-1', '--fullscreen')
@@ -48,7 +60,8 @@ class StreamPlayer(MycroftSkill):
                         self.player.play()
                         
                         break
-        if self.url == '':
+
+        if url_record == '':
                 self.speak_dialog("Please enter that station in your Stream Player skill setup")
         	
     @intent_handler('player.stop.intent')

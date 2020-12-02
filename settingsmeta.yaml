@@ -1,22 +1,15 @@
 
 skillMetadata:
   sections:
-    - name: Options << Name of section
-      fields:
-        - name: internal_python_variable_name
-          type: text
-          label: Setting Friendly Display Name
-          value: ""
-          placeholder: demo prompt in the input box
-    - name: Login << Name of another section
+    - name: My Streams
       fields:
         - type: label
-          label: Just a little bit of extra info for the user to understand following settings
-        - name: username
+          label: List the streams you'd like to access
+        - name: stream1
           type: text
-          label: Username
-          value: ""
-        - name: password
-          type: password
-          label: Password
+          label: Stream 1
+          value: "WAMC http://playerservices.streamtheworld.com/api/livestream-redirect/WAMCHD2.mp3"
+        - name: stream2
+          type: text
+          label: Stream 2
           value: ""
