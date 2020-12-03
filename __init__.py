@@ -18,25 +18,26 @@ class StreamPlayer(MycroftSkill):
         utterance = message.data.get('utterance')
         #self.speak_dialog(utterance)
         LOG.info(utterance)
+        print(utterance)
 
         instance = None
         url_record = 'junk'
         count = 0
-        
-        while url_record != '':
-                
+
+        while url_record != None and url_record != "?":
+
                 count = count + 1
                 stream_name = 'stream' + str(count)
+                print(stream_name)
                 url_record = self.settings.get(stream_name)
-                
-                if url_record == '':
+                print(url_record)
+                if url_record == None or url_record == "?":
                         continue
                         
                 strings = url_record.split(" ")
                 self.url = strings[1]
-                print(self.url)
-                print(strings[0])
-                print(utterance)
+                #print(self.url)
+                #print(strings[0])
         
                 if re.search(strings[0].lower(), utterance):
 
@@ -61,9 +62,17 @@ class StreamPlayer(MycroftSkill):
                         
                         break
 
-        if url_record == '':
+        print(url_record)
+        if url_record == "?":
                 self.speak_dialog("Please enter that station in your Stream Player skill setup")
-        	
+        elif url_record == None:
+                f = open("skills/stream-player-skill/settingsmeta.yaml","a+")
+                f.write("        - name: stream%d\n" % count)
+                f.write("          type: text\n")
+                f.write("          label: Stream %d\n" % count)
+                f.write("          value: \"?\"\n")
+                f.close()
+
     @intent_handler('player.stop.intent')
     def handle_stop_intent(self, message):
         mystring = message.data.get('utterance')
