@@ -18,11 +18,11 @@ class StreamPlayer(MycroftSkill):
         utterance = message.data.get('utterance')
         #self.speak_dialog(utterance)
         LOG.info(utterance)
-        print(utterance)
+        #print("Utterance:" + utterance)
 
         instance = None
-        empty_record = 'empty'
-        url_record = empty_record
+        empty_record = 'empty_record'
+        url_record = 'junk'
         count = 0
 
         
@@ -30,15 +30,22 @@ class StreamPlayer(MycroftSkill):
 
                 count = count + 1
                 stream_name = 'stream' + str(count)
-                print(stream_name)
+                #print("Try reading from: " + stream_name)
                 url_record = self.settings.get(stream_name)
-                print(url_record)
                 if url_record == None or url_record == empty_record:
+                        ...
+                        if url_record == None:
+                                print(" Returned: None")
+                        else:
+                                print(" Returned: " + empty_record)
+                        ...
                         continue
+
+                #print(" Returned: " + url_record)
                         
                 strings = url_record.split(" ")
                 self.url = strings[1]
-                print("  found: " + strings[0])
+                #print("  found: " + strings[0])
         
                 if re.search(strings[0].lower(), utterance):
 
@@ -63,7 +70,6 @@ class StreamPlayer(MycroftSkill):
                         
                         break
 
-        print(url_record)
         # if we didn't find our station
         if url_record == empty_record or url_record == None:
                 self.speak_dialog("Please enter this station in your Stream Player skill setup")
@@ -76,7 +82,7 @@ class StreamPlayer(MycroftSkill):
                 f.write("          label: Stream %d\n" % count)
                 f.write("          value: \"empty_record\"\n")
                 f.close()
-
+         
     @intent_handler('player.stop.intent')
     def handle_stop_intent(self, message):
         mystring = message.data.get('utterance')
