@@ -41,9 +41,9 @@ class StreamPlayer(MycroftSkill):
                         ...
                         continue
 
-                #print(" Returned: " + url_record)
+                print(" Returned: " + url_record)
                         
-                strings = url_record.split(" ")
+                strings = url_record.split(",")
                 self.url = strings[1]
                 #print("  found: " + strings[0])
         

@@ -16,7 +16,7 @@ skillMetadata:
         - name: stream1
           type: text
           label: Stream 1
-          value: "WAMC http://playerservices.streamtheworld.com/api/livestream-redirect/WAMCHD2.mp3"
+          value: "WAMC,http://playerservices.streamtheworld.com/api/livestream-redirect/WAMCHD2.mp3"
         - name: stream2
           type: text
           label: Stream 2
