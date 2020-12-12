@@ -7,7 +7,7 @@ skillMetadata:
           label: Say "stream WAMC" or "stop streaming" or "cancel streaming".
         - name: willing_to_share
           type: checkbox
-          label: Make my streaming entries avialable to other users.
+          label: Make my streaming entries available to other users.
           value: "false"
     - name: Streams
       fields:
