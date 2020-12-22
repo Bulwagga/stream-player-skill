@@ -1,7 +1,8 @@
 from mycroft import MycroftSkill, intent_handler
+# see https://github.com/johnbartkiw/mycroft-skill-iheartradio/__init__.py
 from mycroft.util.log import LOG
+from mycroft.audio.services.vlc import VlcService
 import re
-import vlc
 import time
 
 class StreamPlayer(MycroftSkill):
@@ -9,7 +10,7 @@ class StreamPlayer(MycroftSkill):
         MycroftSkill.__init__(self)
 
     url = ''
-    player=''
+    mediaplayer=''
     
     @intent_handler('player.stream.intent')
     def handle_stream_intent(self, message):
@@ -24,8 +25,8 @@ class StreamPlayer(MycroftSkill):
         empty_record = 'empty_record'
         url_record = 'junk'
         count = 0
-
-        
+        mediaplayer = None
+       
         while url_record != None and url_record != empty_record:
 
                 count = count + 1
@@ -40,33 +41,24 @@ class StreamPlayer(MycroftSkill):
                                 print(" Returned: " + empty_record)
                         ...
                         continue
-
-                print(" Returned: " + url_record)
                         
                 strings = url_record.split(",")
                 self.url = strings[1]
-                #print("  found: " + strings[0])
-        
+
                 if re.search(strings[0].lower(), utterance):
 
                         if instance == None:
-                                #define VLC instance
-                                instance = vlc.Instance('--input-repeat=-1', '--fullscreen')
-                                if instance is None:      # atfer bundled self.instance is None
+                                self.mediaplayer = VlcService(config={'low_volume': 10, 'duck': True})
+
+                                if self.mediaplayer is None:
                                         LOG.exception("VLC could not create an Instance")
                                         break
 
-                                #Define VLC player
-                                self.player=instance.media_player_new()
-
-                        #Define VLC media
-                        media=instance.media_new(self.url)
-
-                        #Set player media
-                        self.player.set_media(media)
-
                         #Play the media
-                        self.player.play()
+                        tracklist = []
+                        tracklist.append(self.url)
+                        self.mediaplayer.add_list(tracklist)
+                        self.mediaplayer.play()
                         
                         break
 
@@ -82,13 +74,14 @@ class StreamPlayer(MycroftSkill):
                 f.write("          label: Stream %d\n" % count)
                 f.write("          value: \"empty_record\"\n")
                 f.close()
-         
+
     @intent_handler('player.stop.intent')
     def handle_stop_intent(self, message):
         mystring = message.data.get('utterance')
         LOG.info(mystring)
+        self.mediaplayer.stop()
+        self.mediaplayer.clear_list()
         self.url = ''
-        self.player.stop()
         
 def create_skill():
     return StreamPlayer()
