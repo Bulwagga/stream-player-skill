@@ -55,11 +55,12 @@ class StreamPlayer(MycroftSkill):
                                         break
 
                         #Play the media
+                        self.speak_dialog("player.stream")
+                        time.sleep(2.0)
                         tracklist = []
                         tracklist.append(self.url)
                         self.mediaplayer.add_list(tracklist)
                         self.mediaplayer.play()
-                        
                         break
 
         # if we didn't find our station
