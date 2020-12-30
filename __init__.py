@@ -65,7 +65,7 @@ class StreamPlayer(MycroftSkill):
 
         # if we didn't find our station
         if url_record == empty_record or url_record == None:
-                self.speak_dialog("Please enter this station in your Stream Player skill setup")
+                self.speak_dialog("Please enter this station in your Stream Player skill settings")
         
         # if there is no open record in the user's table, create one
         if url_record == None:
