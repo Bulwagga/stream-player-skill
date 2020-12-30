@@ -1,5 +1,4 @@
 from mycroft import MycroftSkill, intent_handler
-# see https://github.com/johnbartkiw/mycroft-skill-iheartradio/__init__.py
 from mycroft.util.log import LOG
 from mycroft.audio.services.vlc import VlcService
 import re
@@ -14,12 +13,8 @@ class StreamPlayer(MycroftSkill):
     
     @intent_handler('player.stream.intent')
     def handle_stream_intent(self, message):
-        #self.speak_dialog("find a station")
-        #print('Message: "{}"'.format(message.data.get('utterance')))
         utterance = message.data.get('utterance')
-        #self.speak_dialog(utterance)
         LOG.info(utterance)
-        #print("Utterance:" + utterance)
 
         instance = None
         empty_record = 'empty_record'
@@ -31,7 +26,6 @@ class StreamPlayer(MycroftSkill):
 
                 count = count + 1
                 stream_name = 'stream' + str(count)
-                #print("Try reading from: " + stream_name)
                 url_record = self.settings.get(stream_name)
                 if url_record == None or url_record == empty_record:
                         ...
@@ -43,9 +37,10 @@ class StreamPlayer(MycroftSkill):
                         continue
                         
                 strings = url_record.split(",")
-                self.url = strings[1]
+                slen = len(strings)
 
-                if re.search(strings[0].lower(), utterance):
+                if re.search(strings[0].lower(), utterance) or \
+                (slen > 2 and re.search(strings[2].lower(), utterance)):
 
                         if instance == None:
                                 self.mediaplayer = VlcService(config={'low_volume': 10, 'duck': True})
@@ -55,6 +50,7 @@ class StreamPlayer(MycroftSkill):
                                         break
 
                         #Play the media
+                        self.url = strings[1]
                         self.speak_dialog("player.stream")
                         time.sleep(2.0)
                         tracklist = []
