@@ -12,7 +12,7 @@ skillMetadata:
     - name: Streams
       fields:
         - type: label
-          label: Enter your own streams below using the first entry as a pattern:  Station Name, URL, Descriptor
+          label: Enter your own streams below using the first entry as a pattern.  Station Name, URL, Descriptor
         - name: stream1
           type: text
           label: Stream 1
