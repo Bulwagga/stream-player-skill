@@ -29,3 +29,7 @@ skillMetadata:
           type: text
           label: Stream 4
           value: "empty_record"
+        - name: stream5
+          type: text
+          label: Stream 5
+          value: "empty_record"
