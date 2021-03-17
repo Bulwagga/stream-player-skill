@@ -14,8 +14,8 @@ class StreamPlayer(MycroftSkill):
     @intent_handler('player.stream.intent')
     def handle_stream_intent(self, message):
         utterance = message.data.get('utterance')
-        LOG.info(utterance)
-
+        # LOG.info(utterance)
+	
         instance = None
         empty_record = 'empty_record'
         url_record = 'junk'
